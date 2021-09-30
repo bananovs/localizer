@@ -27,7 +27,6 @@ class MainController extends Controller
         $lang = $request->get('lang');
         $data['hash'] = sha1($projectName) . time();
 
-
         if ($request->hasFile('file') && $request->file('file')->isValid()) {
             $path = $this->storeFile($request->file('file'), $data['hash']);
             $data['items'] = json_decode(file_get_contents($path), true);
@@ -55,6 +54,19 @@ class MainController extends Controller
 
         return view('show', compact('project'));
 
+    }
+
+    public function addItem($hash)
+    {
+        $project = Project::getByHash($hash);
+        $item = $project->createLocItems($project->localize, null);
+
+        return $item->id;
+    }
+
+    public function destroyItem(Request $request, $hash)
+    {
+        return LocItem::findOrFail($request->get('id'))->delete();
     }
 
     public function download(Request $request, $hash)

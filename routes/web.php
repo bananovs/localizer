@@ -20,3 +20,5 @@ Route::get('/list', [MainController::class, 'list'])->name('index.list');
 Route::get('/{hash}', [MainController::class, 'show'])->name('index.show');
 Route::post('/{hash}/download', [MainController::class, 'download'])->name('index.download');
 Route::post('/{hash}/store', [MainController::class, 'storeItem'])->name('index.store.item');
+Route::post('/{hash}/add', [MainController::class, 'addItem'])->name('index.store.item.add');
+Route::post('/{hash}/delete', [MainController::class, 'destroyItem'])->name('index.store.item.delete');

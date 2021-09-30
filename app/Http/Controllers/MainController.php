@@ -6,7 +6,6 @@ use App\Models\Localize;
 use App\Models\LocItem;
 use App\Models\Project;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class MainController extends Controller

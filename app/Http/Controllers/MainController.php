@@ -78,7 +78,7 @@ class MainController extends Controller
             $data[$item['origin']] = $item['new_trans'];
         }
         $filename =  time() . '.json';
-        Storage::disk('local')->put('/localize/' . $filename, json_encode($data, JSON_UNESCAPED_UNICODE));
+        Storage::disk('local')->put('/localize/' . $filename, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
         $headers = [
             'Content-Type' => 'application/json',

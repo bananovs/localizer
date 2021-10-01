@@ -7,10 +7,27 @@
                 <h1>{{ __("Project name:")}} {{ $project->project_name ?? ''}} <br>{{ __("Lang:")}} {{ $project->localize->loc_name }}</h1>
             </div>
             <div class="col-sm-2">
-               <a href="{{ route('index.download', $project->hash) }}" class="btn bg-primary" style="color:orange;"><i class="fa fa-cloud-download" aria-hidden="true"></i></a>
+               {{-- <a href="{{ route('index.download', $project->hash) }}" class="btn bg-primary" style="color:orange;"><i class="fa fa-cloud-download" aria-hidden="true"></i></a> --}}
             </div>
         </div>
+
         <div class="card">
+            <div class="card-header sticky-top bg-dark" style="color:white">
+                <div class="form-group row">
+                    <div class="col-sm-1">
+                        №
+                    </div>
+                    <div class="col-sm-3">
+                        {{ __("Origin dev words") ?? ""}}
+                    </div>
+                    <div class="col-sm-4">
+                        {{ __("Example trans words") ?? ""}}
+                    </div>
+                    <div class="col-sm-4">
+                        {{ __("New trans") ?? ""}}
+                    </div>
+                </div>
+            </div>
             <div class="card-body">
                 <form id="form" method="POST" action="{{ route('index.download', $project->hash) }}" enctype="multipart/form-data">
                 @csrf
@@ -41,7 +58,7 @@
                     </div>
                 <div class="form-group row offset-4">
                     <div class="col-sm-8">
-                        <button type="submit" class="btn btn-primary">{{__('Download!')}}</button>
+                        <button type="submit" class="btn btn-primary">{{__('Download: Origin dev + New trans .json')}}</button>
                     </div>
                 </div>
                 </form>

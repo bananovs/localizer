@@ -9,7 +9,7 @@
 
                 @foreach ($projects as $item)
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label"> {{ $item->project_name ?? ''}}</label>
+                        <label class="col-sm-4 col-form-label"> {{ $item->project_name ?? ''}} ({{ $item->lang ?? ''}})</label>
                         <div class="col-sm-8">
                             <a href="{{ route('index.show', ['hash' => $item->hash])}}"> {{ $item->hash ?? ""}}</a>
                         </div>

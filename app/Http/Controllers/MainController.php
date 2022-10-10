@@ -10,9 +10,41 @@ use Illuminate\Support\Facades\Storage;
 
 class MainController extends Controller
 {
+
+    const LANG = [
+        "BG" => "BG - Bulgarian",
+        "CS" => "CS - Czech",
+        "DA" => "DA - Danish",
+        "DE" => "DE - German",
+        "EL" => "EL - Greek",
+        "EN-GB" => "EN-GB - English (British)",
+        "EN-US" => "EN-US - English (American)",
+        "ES" => "ES - Spanish",
+        "ET" => "ET - Estonian",
+        "FI" => "FI - Finnish",
+        "FR" => "FR - French",
+        "HU" => "HU - Hungarian",
+        "ID" => "ID - Indonesian",
+        "IT" => "IT - Italian",
+        "JA" => "JA - Japanese",
+        "LT" => "LT - Lithuanian",
+        "LV" => "LV - Latvian",
+        "NL" => "NL - Dutch",
+        "PL" => "PL - Polish",
+        "PT-BR" => "PT-BR - Portuguese (Brazilian)",
+        "RO" => "RO - Romanian",
+        "RU" => "RU - Russian",
+        "SK" => "SK - Slovak",
+        "SL" => "SL - Slovenian",
+        "SV" => "SV - Swedish",
+        "TR" => "TR - Turkish",
+        "UK" => "UK - Ukrainian",
+        'ZH'  => "Chinese (simplified)",
+    ];
+
     public function index()
     {
-        return view('index');
+        return view('index')->with(['langs' => self::LANG]);
     }
 
     public function list()
@@ -56,6 +88,43 @@ class MainController extends Controller
 
     }
 
+    public function deepl($hash)
+    {
+
+        $project = Project::getByHash($hash);
+        if($project) {
+            $token = config('app.deepl');
+            if(is_null($token) or empty($token)) {
+                return view('show', compact('project'))->withMessage('Deepl APi key is not detected!');
+            }
+            if(!$project->localize->locItem->isEmpty()) {
+                $translator = new \DeepL\Translator($token);
+                // $project->lang = "en-US";
+                set_time_limit(0);
+                foreach ($project->localize->locItem as $item) {
+                    if(empty($item['new_trans'])) {
+
+                        if(isset($item['trans']) && !empty($item['trans'])) {
+                            $result = $translator->translateText($item['trans'], null, $project->lang);
+                        } else {
+                            $result = $translator->translateText($item['origin'], null, $project->lang);
+                        }
+
+                        if($result) {
+                            if(isset($result->text)) {
+                                $item->update(['new_trans' => $result->text]);
+                            }
+                        }
+                        usleep(10000);
+                    }
+                }
+            }
+
+        }
+        return view('show', compact('project'));
+
+    }
+
     public function addItem($hash)
     {
         $project = Project::getByHash($hash);
@@ -78,7 +147,7 @@ class MainController extends Controller
             $data[$item['origin']] = $item['new_trans'];
         }
         $filename =  time() . '.json';
-        Storage::disk('local')->put('/localize/' . $filename, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        Storage::disk('local')->put('/localize/' . $filename, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 
         $headers = [
             'Content-Type' => 'application/json',

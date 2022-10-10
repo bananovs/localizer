@@ -15,9 +15,13 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">{{ __('Language') }}</label>
+                        <label class="col-sm-4 col-form-label">{{ __('Language trans') }} </label>
                         <div class="col-sm-8">
-                            <input type="text" name="lang" class="form-control" placeholder="en_EN" value="ru">
+                            <select class="form-control" name="lang">
+                                @foreach ($langs as $k => $v)
+                                    <option value="{{ $k }}">{{ $v }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">

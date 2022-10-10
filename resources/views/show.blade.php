@@ -7,7 +7,7 @@
                 <h1>{{ __("Project name:")}} {{ $project->project_name ?? ''}} <br>{{ __("Lang:")}} {{ $project->localize->loc_name }}</h1>
             </div>
             <div class="col-sm-2">
-               {{-- <a href="{{ route('index.download', $project->hash) }}" class="btn bg-primary" style="color:orange;"><i class="fa fa-cloud-download" aria-hidden="true"></i></a> --}}
+               <a href="{{ route('index.deepl', $project->hash) }}" class="btn bg-primary" style="color:orange;">DEEPL API GO</a>
             </div>
         </div>
 

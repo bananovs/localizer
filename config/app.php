@@ -14,7 +14,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
-
+    'deepl' => env('DEEPL_API', ''),
     /*
     |--------------------------------------------------------------------------
     | Application Environment
